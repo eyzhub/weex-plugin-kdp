@@ -1,2 +1,2 @@
-# kdpweex
-Kaltura Dynamic Player implementation for Weex Components
+# weex-kdp
+Kaltura Dynamic Player implementation as Weex Components
