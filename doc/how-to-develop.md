@@ -1,0 +1,106 @@
+# Plugin Development Guide
+
+## Project structure
+
+The project structure is:
+```
+     ├── android   (Android native code project)
+     │    └── ...
+     ├── ios   (iOS native code project)
+     │    └── ...
+     ├── js   (html5 project)
+     │    └── ...
+     ├── examples   (sample app)
+     │    └── index.vue
+     ├── playground   (sample projects to test the plugin)
+     │    ├── android
+     │    ├── browser
+     │    └── ios
+     ├── WeexMyPlugin.podspec   (iOS .podspec)
+     ├── start   (builds the native plugin and watches for changes)
+     ├── start-web   (builds the web plugin and watches for changes)
+     ├── package.json
+     ├── README.md
+  ```
+
+The `examples` directory contains a weex app that you can use to test your plugin. This test app will be loaded from the playground apps that are installed in the `playground` folder.
+
+## Web
+
+### Developing and testing with the playground app
+1. Build the example weex app in `examples/index.vue`:
+  ```
+  ./start-web
+  ```
+  Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you. The app will be served in the port 12580 (e.g. http://localhost:12580).
+
+2. Edit the plugin JavaScript/HTML/CSS code under the `js` folder. Refresh the test app to update the plugin in the playground app.
+
+### Extending Web functionality
+See [Extend Web Render](https://weex.apache.org/references/advanced/extend-to-html5.html).
+
+## Android
+
+### Developing and testing with the playground app
+1. Build the example weex app in `examples/index.vue`:
+  ```
+  ./start
+  ```
+  Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you.
+
+2. Open the android project under `playground/android` with Android Studio.
+
+  The native plugin code will be linked as a gradle dependency. You can develop and test the plugin directly from Android Studio. You can also use `weex debug` to debug the playground app.
+
+### Extending native functionality
+See [Extend Android](https://weex.apache.org/references/advanced/extend-to-android.html).
+
+## iOS
+
+### Developing and testing with the playground app
+1. Build the example weex app in `examples/index.vue`:
+  ```
+  ./start
+  ```
+  Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you.
+
+2. Open the iOS playground app and install the dependencies:
+  ```
+  cd playground/ios
+  pod install
+  ```
+3. Open `WeexDemo.xcworkspace` in Xcode.
+
+  The native plugin code will be linked as cocoa pod. You can develop and test the plugin directly from Xcode. You can also use `weex debug` to debug the playground app.
+
+### Extending native functionality
+See [Extend iOS](https://weex.apache.org/references/advanced/extend-to-ios.html).
+
+### Publishing the plugin to the cocapods repository
+1. Edit the `*.podspec` generated in the root of the plugin project.
+2. Check the correctness of the iOS plugin:
+  ```
+  pod spec lint --allow-warnings
+  ```
+3. Publish to cocoapods repository:
+  ```
+  pod trunk push --allow-warnings
+  ```
+
+## Publish the plugin in the weex market
+You can publish to the [Weex Market](../tools/market.html) with the simple command:
+```
+weex plugin publish
+```
+
+## How to use this plugin in another project
+### Using `weexpack`:
+```
+weex plugin add
+```
+
+### Manual integration:
+- iOS:
+```
+pod 'WeexMyPlugin'
+```
