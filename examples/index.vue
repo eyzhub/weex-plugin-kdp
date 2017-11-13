@@ -13,7 +13,7 @@
 
 <script>
 
-	const plugin = weex.requireModule('weexKdp');
+	const plugin = weex.requireModule('WeexKdp');
 	module.exports = {
 		data: {
 			value: '',

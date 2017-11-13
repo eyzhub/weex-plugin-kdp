@@ -40,6 +40,8 @@
   "scripts": {
     "dev": "webpack --watch --config build/webpack.config.js",
     "build": "webpack --config build/webpack.config.js",
+    "start:web": "npm run build && npm run serve & npm run dev:examples:web",
+    "start:native": "npm run build && npm run serve & npm run dev:examples",
     "dev:examples": "webpack --watch --config build/webpack.examples.config.js",
     "dev:examples:web": "webpack --watch --config build/webpack.examples.web.config.js",
     "build:examples": "webpack --config build/webpack.examples.config.js",
@@ -59,10 +61,12 @@
     "query-string": "^4.2.3",
     "scroll-to": "0.0.2",
     "semver": "^5.1.0",
+    "serve": "^6.4.1",
     "weex-components": "^0.2.0",
     "weex-picker": "^0.1.0",
     "weex-rax-framework": "0.0.10",
-    "weex-vue-framework": "2.1.8-weex.1"
+    "weex-vue-framework": "2.1.8-weex.1",
+    "weex-vue-render": "^0.12.25"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
@@ -86,7 +90,6 @@
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^2.5.0",
-    "serve": "^1.4.0",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
     "uglify-js": "^2.6.4",

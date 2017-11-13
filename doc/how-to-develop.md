@@ -1,5 +1,20 @@
 # Plugin Development Guide
 
+## Getting started
+
+1- Clone the project
+  ```
+  git clone https://github.com/eyzhub/weex-kdp
+  ```
+
+2- Install dependencies
+  ```
+  npm install -g weex-toolkit
+  weex update weex-devtool@latest
+  npm install
+  ```
+  For more detail, see [Setup Development Environment](https://weex.apache.org/guide/set-up-env.html).
+
 ## Project structure
 
 The project structure is:
@@ -17,8 +32,6 @@ The project structure is:
      │    ├── browser
      │    └── ios
      ├── WeexMyPlugin.podspec   (iOS .podspec)
-     ├── start   (builds the native plugin and watches for changes)
-     ├── start-web   (builds the web plugin and watches for changes)
      ├── package.json
      ├── README.md
   ```
@@ -30,7 +43,7 @@ The `examples` directory contains a weex app that you can use to test your plugi
 ### Developing and testing with the playground app
 1. Build the example weex app in `examples/index.vue`:
   ```
-  ./start-web
+  npm run start:web
   ```
   Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you. The app will be served in the port 12580 (e.g. http://localhost:12580).
 
@@ -44,7 +57,7 @@ See [Extend Web Render](https://weex.apache.org/references/advanced/extend-to-ht
 ### Developing and testing with the playground app
 1. Build the example weex app in `examples/index.vue`:
   ```
-  ./start
+  npm run start:native
   ```
   Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you.
 
@@ -60,7 +73,7 @@ See [Extend Android](https://weex.apache.org/references/advanced/extend-to-andro
 ### Developing and testing with the playground app
 1. Build the example weex app in `examples/index.vue`:
   ```
-  ./start
+  npm run start:native
   ```
   Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you.
 
@@ -93,14 +106,3 @@ You can publish to the [Weex Market](../tools/market.html) with the simple comma
 weex plugin publish
 ```
 
-## How to use this plugin in another project
-### Using `weexpack`:
-```
-weex plugin add
-```
-
-### Manual integration:
-- iOS:
-```
-pod 'WeexMyPlugin'
-```

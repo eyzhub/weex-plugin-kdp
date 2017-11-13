@@ -1,6 +1,7 @@
-if(window.Weex){
-  Weex.install(require("../../js/src"));
-}
-else if(window.weex){
-  weex.install(require("../../js/src"));
+import WeexKdp from "../../js/src";
+
+if (window.Weex) {
+  Weex.install(WeexKdp);
+} else if (window.weex) {
+  weex.install(WeexKdp);
 }
