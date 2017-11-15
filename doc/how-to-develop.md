@@ -43,7 +43,7 @@ The `examples` directory contains a weex app that you can use to test your plugi
 ### Developing and testing with the playground app
 1. Build the example weex app in `examples/index.vue`:
   ```
-  npm run start:web
+
   ```
   Webpack will be listening for changes in `examples/index.vue` and re-build the example app for you. The app will be served in the port 12580 (e.g. http://localhost:12580).
 

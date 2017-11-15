@@ -13,7 +13,7 @@ const meta = {
 };
 
 function init(weex) {
-  weex.registerModule('WeexKdp', WeexKdp, meta);
+  weex.registerModule('weexKdp', WeexKdp, meta);
 }
 
 export default {
