@@ -1,10 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '7.0'
+platform :ios, '9.0'
+use_frameworks!
 #inhibit_all_warnings!
 
 def common
-	pod 'WeexSDK'
+	pod 'WeexSDK', '0.16.0'
 	pod 'WeexPluginLoader'
+	pod 'PlayKit'
 end
 
 target 'WeexKdp' do

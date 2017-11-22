@@ -1,7 +1,10 @@
 <template>
 	<div class="container">
 		<text style="margin-bottom: 20px;">weex plugin example</text>
-		<button @click="createAction" style="margin: 20px;padding:20px;background-color:#1ba1e2;color:#fff;"><text style="color:#fff">hello world</text></button>
+		<button @click="createAction" style="margin: 20px;padding:20px;background-color:#1ba1e2;color:#fff;">
+			<text style="color:#fff">hello world2</text>
+		</button>
+		<weexKdp ref="kdp" class="kdp" style="height:400"></weexKdp>
 	</div>
 </template>
 

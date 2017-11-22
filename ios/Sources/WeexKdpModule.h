@@ -2,8 +2,8 @@
 //  WeexKdpModule.h
 //  WeexPluginTemp
 //
-//  Created by 齐山 on 17/3/14.
-//  Copyright © 2017年 taobao. All rights reserved.
+//  Created by Tiago Alves on 16/11/17.
+//  Copyright © 2017 realeyz. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

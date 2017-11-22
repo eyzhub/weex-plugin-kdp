@@ -1,7 +1,7 @@
 # weex-kdp
 Kaltura Dynamic Player implementation as Weex Components
 
-## Installing this plugin in your project
+## Installing the plugin in your project
 ### Using `weexpack`:
 ```
 weex plugin add weex-kdp
@@ -10,7 +10,7 @@ weex plugin add weex-kdp
 ### Manual integration:
 #### iOS:
 ```
-pod 'WeexMyPlugin'
+pod 'WeexKdp'
 ```
 
 #### Android:
@@ -25,10 +25,10 @@ Add the following line to the dependencies list in the build.gradle file for the
  npm install weexkdp
 ```
 
-## Developing this plugin
+## Developing the plugin
 
-See [How to develop](#how-to-develop).
+See [How to develop](./doc/how-to-develop.md).
 
 also,
 
-See the [Plugin Development Guide](./doc/how-to-develop.md).
+See the [Plugin Development Guide](https://weex.apache.org/guide/create-a-plugin.html).
