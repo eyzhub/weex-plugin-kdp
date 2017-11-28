@@ -13,8 +13,8 @@
 @interface WeexKdpComponent()<PlayerDelegate>
 
 @property(nonatomic, assign) CGRect frame;
-@property (nonatomic, strong) id<Player> kPlayer;
-@property (strong, nonatomic) IBOutlet PlayerView *playerContainer;
+@property (nonatomic, strong) id<Player> player;
+@property (strong, nonatomic) PlayerView *playerContainer;
 
 
 @end
@@ -90,69 +90,43 @@ weexInstance:(WXSDKInstance *)weexInstance{
 - (void)viewDidLoad;
 {
     [super viewDidLoad];
-    [self startBasicOVPPlayer];
+    NSError *error = nil;
+    self.player = [[PlayKitManager sharedInstance] loadPlayerWithPluginConfig:nil error:&error];
+    // make sure player loaded
+    if (!error) {
+        // 2. Register events if have ones.
+        // Event registeration must be after loading the player successfully to make sure events are added,
+        // and before prepare to make sure no events are missed (when calling prepare player starts buffering and sending events)
+        
+        // 3. Prepare the player (can be called at a later stage, preparing starts buffering the video)
+        [self preparePlayer];
+    } else {
+        // error loading the player
+    }
+    [self.player play];
 }
 
 - (UIView *)loadView
 {
     if(!self.kdpview){
         UIView *kdpview = [[UIView alloc] initWithFrame:self.frame];
-//        UIImageView *imgview = [[UIImageView alloc] initWithFrame:kdpview.bounds];
-//        [imgview setImage:[UIImage imageNamed:@"AppIcon"]];
-//        [imgview setClipsToBounds:YES];
-//        [kdpview addSubview:imgview];
+        kdpview.bounds = self.frame;
+
         self.playerContainer = [[PlayerView alloc] initWithFrame:self.frame];
         [kdpview addSubview:self.playerContainer];
+        
+//        UIImageView *imgview2 = [[UIImageView alloc] initWithFrame:kdpview.bounds];
+//        [imgview2 setImage:[UIImage imageNamed:@"AppIcon"]];
+//        [imgview2 setClipsToBounds:YES];
+//        [kdpview addSubview:imgview2];
+
         self.kdpview = kdpview;
     }
     return self.kdpview;
 }
 
--(void)startPlayerWithMediaConfig:(MediaConfig*)mediaConfig pluginConfig:(PluginConfig*)pluginConfig {
-    NSError* error;
-    self.kPlayer = [PlayKitManager.sharedInstance loadPlayerWithPluginConfig:pluginConfig error:&error];
-    
-    // prepare the player with media entry to start the plugin and buffering the media.
-    [self.kPlayer prepare:mediaConfig];
-    
-    self.kPlayer.view.frame = CGRectMake(0, 0, self.playerContainer.frame.size.width,self.playerContainer.frame.size.height);
-    
-    [self.kPlayer addObserver:self events:@[PlayerEvent.playing, PlayerEvent.durationChanged, PlayerEvent.stateChanged] block:^(PKEvent * _Nonnull event) {
-        if ([event isKindOfClass:PlayerEvent.playing]) {
-            NSLog(@"playing %@", event);
-        } else if ([event isKindOfClass:PlayerEvent.durationChanged]) {
-            NSLog(@"duration: %@", event.duration);
-        } else if ([event isKindOfClass:PlayerEvent.stateChanged]) {
-            NSLog(@"old state: %ld", (long)event.oldState);
-            NSLog(@"new state: %ld", (long)event.newState);
-        } else {
-            NSLog(@"event: %@", event);
-        }
-    }];
-    
-    [self.kPlayer addObserver:self events:@[PlayerEvent.error] block:^(PKEvent * _Nonnull event) {
-        NSError *error = event.error;
-        if (error && error.domain == PKErrorDomain.Player && error.code == 7000) {
-            // handle error
-        }
-    }];
-    
-    self.kPlayer.delegate = self;
-    [self.playerContainer addSubview:self.kPlayer.view];
-    [self.kPlayer play];
-}
-
--(void)startBasicOVPPlayer {
-    SimpleOVPSessionProvider* sessionProvider = [[SimpleOVPSessionProvider alloc] initWithServerURL:@"https://cdnapisec.kaltura.com" partnerId:2215841 ks:nil];
-    OVPMediaProvider* mediaProvider = [[OVPMediaProvider alloc] init:sessionProvider];
-    mediaProvider.entryId = @"1_vl96wf1o";
-    [mediaProvider loadMediaWithCallback:^(PKMediaEntry * _Nullable mediaEntry, NSError * _Nullable error) {
-        [self startPlayerWithMediaConfig:[[MediaConfig alloc] initWithMediaEntry:mediaEntry startTime:0] pluginConfig:nil];
-    }];
-}
-
-- (void)startPlayerWithGivenSource {
-    
+- (void)preparePlayer {
+    self.player.view = self.playerContainer;
     NSURL *contentURL = [[NSURL alloc] initWithString:@"https://cdnapisec.kaltura.com/p/2215841/playManifest/entryId/1_w9zx2eti/format/applehttp/protocol/https/a.m3u8"];
     
     // create media source and initialize a media entry with that source
@@ -165,25 +139,19 @@ weexInstance:(WXSDKInstance *)weexInstance{
     // create media config
     MediaConfig *mediaConfig = [[MediaConfig alloc] initWithMediaEntry:mediaEntry startTime:0.0];
     
-    
-    
-    [self startPlayerWithMediaConfig:mediaConfig pluginConfig:nil];
-    
-}
-
-- (BOOL)playerShouldPlayAd:(id<Player>)player {
-    return YES;
+    // prepare the player
+    [self.player prepare:mediaConfig];
 }
 
 - (IBAction)playTapped:(id)sender {
-    if(!self.kPlayer.isPlaying) {
-        [self.kPlayer play];
+    if(!self.player.isPlaying) {
+        [self.player play];
     }
 }
 
 - (IBAction)pauseTapped:(id)sender {
-    if(self.kPlayer.isPlaying) {
-        [self.kPlayer pause];
+    if(self.player.isPlaying) {
+        [self.player pause];
     }
 }
 
