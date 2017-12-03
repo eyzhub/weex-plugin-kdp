@@ -6,13 +6,19 @@
 //  Copyright © 2017 realeyz. All rights reserved.
 //
 
-#import "WeexKdpModule.h"
-#import "WeexKdpComponent.h"
+#import "WXKdpModule.h"
+#import "WXKdpComponent.h"
 #import <WeexPluginLoader/WeexPluginLoader.h>
 
-@implementation WeexKdpModule
+@interface WXKdpModule()
 
-WX_PlUGIN_EXPORT_MODULE(weexKdp, WeexKdpModule)
+@property (nonatomic, weak) WXKdpComponent *kdpComponent;
+
+@end
+
+@implementation WXKdpModule
+
+WX_PlUGIN_EXPORT_MODULE(weexKdp, WXKdpModule)
 
 @synthesize weexInstance;
 
@@ -27,5 +33,6 @@ WX_EXPORT_METHOD(@selector(show))
     [alertview show];
     
 }
+
 
 @end

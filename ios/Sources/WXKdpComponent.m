@@ -1,27 +1,28 @@
 //
-//  WeexKdpComponent.m
+//  WXKdpComponent.m
 //  Pods-WeexDemo
 //
 //  Created by Tiago Alves on 20/11/17.
 //
 
 #import <Foundation/Foundation.h>
-#import "WeexKdpComponent.h"
+#import "WXKdpComponent.h"
 #import <PlayKit/PlayKit-Swift.h>
 #import <WeexPluginLoader/WeexPluginLoader.h>
 
-@interface WeexKdpComponent()<PlayerDelegate>
+@interface WXKdpComponent()<PlayerDelegate>
 
 @property(nonatomic, assign) CGRect frame;
 @property (nonatomic, strong) id<Player> player;
-@property (strong, nonatomic) PlayerView *playerContainer;
 
 
 @end
 
-@implementation WeexKdpComponent
+@implementation WXKdpComponent
 
-WX_PlUGIN_EXPORT_COMPONENT(weexKdp,WeexKdpComponent)
+WX_PlUGIN_EXPORT_COMPONENT(weexKdp,WXKdpComponent)
+WX_EXPORT_METHOD(@selector(play))
+WX_EXPORT_METHOD(@selector(pause))
 
 /**
  *  @abstract Initializes a new component using the specified  properties.
@@ -36,11 +37,11 @@ WX_PlUGIN_EXPORT_COMPONENT(weexKdp,WeexKdpComponent)
  *  @return A WXComponent instance.
  */
 - (instancetype)initWithRef:(NSString *)ref
-type:(NSString*)type
-styles:(nullable NSDictionary *)styles
-attributes:(nullable NSDictionary *)attributes
-events:(nullable NSArray *)events
-weexInstance:(WXSDKInstance *)weexInstance{
+    type:(NSString*)type
+    styles:(nullable NSDictionary *)styles
+    attributes:(nullable NSDictionary *)attributes
+    events:(nullable NSArray *)events
+    weexInstance:(WXSDKInstance *)weexInstance {
     self = [super initWithRef:ref type:type styles:styles attributes:attributes events:events weexInstance:weexInstance];
     
     PlayKitManager.logLevel = PKLogLevelInfo;
@@ -74,9 +75,6 @@ weexInstance:(WXSDKInstance *)weexInstance{
         
         self.componentFrame = self.frame;
         
-        
-        
-        
     }
     
     return self;
@@ -87,7 +85,7 @@ weexInstance:(WXSDKInstance *)weexInstance{
     return (self.kdpview != nil);
 }
 
-- (void)viewDidLoad;
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     NSError *error = nil;
@@ -109,24 +107,14 @@ weexInstance:(WXSDKInstance *)weexInstance{
 - (UIView *)loadView
 {
     if(!self.kdpview){
-        UIView *kdpview = [[UIView alloc] initWithFrame:self.frame];
-        kdpview.bounds = self.frame;
-
-        self.playerContainer = [[PlayerView alloc] initWithFrame:self.frame];
-        [kdpview addSubview:self.playerContainer];
-        
-//        UIImageView *imgview2 = [[UIImageView alloc] initWithFrame:kdpview.bounds];
-//        [imgview2 setImage:[UIImage imageNamed:@"AppIcon"]];
-//        [imgview2 setClipsToBounds:YES];
-//        [kdpview addSubview:imgview2];
-
+        PlayerView *kdpview = [[PlayerView alloc] initWithFrame:self.frame];
         self.kdpview = kdpview;
     }
     return self.kdpview;
 }
 
 - (void)preparePlayer {
-    self.player.view = self.playerContainer;
+    self.player.view = self.kdpview;
     NSURL *contentURL = [[NSURL alloc] initWithString:@"https://cdnapisec.kaltura.com/p/2215841/playManifest/entryId/1_w9zx2eti/format/applehttp/protocol/https/a.m3u8"];
     
     // create media source and initialize a media entry with that source
@@ -143,13 +131,13 @@ weexInstance:(WXSDKInstance *)weexInstance{
     [self.player prepare:mediaConfig];
 }
 
-- (IBAction)playTapped:(id)sender {
+- (void)play {
     if(!self.player.isPlaying) {
         [self.player play];
     }
 }
 
-- (IBAction)pauseTapped:(id)sender {
+- (void)pause {
     if(self.player.isPlaying) {
         [self.player pause];
     }

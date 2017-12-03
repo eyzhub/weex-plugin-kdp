@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <WeexSDK/WeexSDK.h>
 
-@interface WeexKdpModule : NSObject<WXModuleProtocol>
+@interface WXKdpModule : NSObject<WXModuleProtocol>
 
 @end

@@ -11,11 +11,11 @@
 #import <UIKit/UIKit.h>
 #import <WeexSDK/WXComponent.h>
 #import <PlayKit/PlayKit-Swift.h>
-#import <GLKit/GLKit.h>
+#import <WeexSDK/WeexSDK.h>
 
-@interface WeexKdpComponent : WXComponent
+@interface WXKdpComponent : WXComponent
 
-@property(nonatomic, strong) UIView* kdpview;
+@property(nonatomic, strong) PlayerView* kdpview;
 @property(nonatomic, assign) CGRect componentFrame;
 
 @end
