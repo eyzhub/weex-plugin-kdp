@@ -14,7 +14,8 @@
 
 @property(nonatomic, assign) CGRect frame;
 @property (nonatomic, strong) id<Player> player;
-
+@property (strong, nonatomic) NSTimer *timeTracker;
+@property (strong, nonatomic) WXModuleKeepAliveCallback trackTimeCallback;
 
 @end
 
@@ -23,6 +24,10 @@
 WX_PlUGIN_EXPORT_COMPONENT(weexKdp,WXKdpComponent)
 WX_EXPORT_METHOD(@selector(play))
 WX_EXPORT_METHOD(@selector(pause))
+WX_EXPORT_METHOD(@selector(getDuration:))
+WX_EXPORT_METHOD(@selector(getCurrentTime:))
+WX_EXPORT_METHOD(@selector(trackTime:))
+WX_EXPORT_METHOD(@selector(seek:))
 
 /**
  *  @abstract Initializes a new component using the specified  properties.
@@ -101,7 +106,7 @@ WX_EXPORT_METHOD(@selector(pause))
     } else {
         // error loading the player
     }
-    [self.player play];
+    // [self.player play];
 }
 
 - (UIView *)loadView
@@ -141,6 +146,55 @@ WX_EXPORT_METHOD(@selector(pause))
     if(self.player.isPlaying) {
         [self.player pause];
     }
+}
+
+#pragma mark - publish method
+- (float)getDuration {
+    if (!self.player) {
+        return 0.0;
+    }
+    
+    float d = self.player.duration;
+    return d;
+}
+
+- (void)getDuration:(WXModuleCallback)callback {
+    if (!self.player) {
+        callback([NSNumber numberWithFloat:0.0]);
+    }
+    
+    callback([NSNumber numberWithFloat:self.player.duration]);
+}
+
+- (float)getCurrentTime {
+    if (!self.player) {
+        return 0.0;
+    }
+    
+    return self.player.currentTime;
+}
+
+- (void)getCurrentTime:(WXModuleCallback)callback {
+    if (!self.player) {
+        callback([NSNumber numberWithFloat:0.0]);
+    }
+    
+    callback([NSNumber numberWithFloat:self.player.currentTime]);
+}
+
+-(void)trackTime:(WXModuleKeepAliveCallback) callback {
+    self.trackTimeCallback = callback;
+    if (!self.timeTracker) {
+        self.timeTracker = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(trackTimeUpdate) userInfo:nil repeats:YES];
+    }
+}
+    
+- (void)trackTimeUpdate {
+    self.trackTimeCallback([NSNumber numberWithFloat:self.player.currentTime], YES);
+}
+
+- (void)seek:(float)to {
+    self.player.currentTime = to;
 }
 
 

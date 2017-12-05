@@ -18,6 +18,9 @@
 @property(nonatomic, strong) PlayerView* kdpview;
 @property(nonatomic, assign) CGRect componentFrame;
 
+- (float)getDuration;
+- (float)getCurrentTime;
+
 @end
 
 #endif /* WeexKdpComponent_h */
