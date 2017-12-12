@@ -29,7 +29,7 @@ Add the following line to the dependencies list in the build.gradle file for the
 
 ## Template
 ### `<weex-kdp>`
-- Adds the `weex-kdp` plugin to the template.
+Adds the `weex-kdp` plugin to the template.
 ```html
 <weexKdp ref="kdp" playerConfig="{/* playerConfig */}"></weexKdp>
 ```
@@ -38,7 +38,7 @@ Add the following line to the dependencies list in the build.gradle file for the
 
 ### `prepare(playerConfig)`
 Prepare for playing an entry. Play when it’s ready.
-- (JSON) `playerConfig`: see [Data: playerConfig](#playerConfig).
+- (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
 ```js
 this.$refs.kdp.prepare({ /* player config */})
 ```
@@ -64,13 +64,13 @@ this.$refs.kdp.seek(time)
 
 ### `prepareNext(playerConfig)`
 Prepare for playing the next entry.
-- (JSON) `playerConfig`: see [Data: playerConfig](#playerConfig).
+- (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
 ```js
 this.$refs.kdp.prepareNext({ /* player config */})
 ```
 
 ### `loadNext()`
-Load the entry that was prepared with [`prepareNext()`](prepareNext()), without waiting for the current entry to end.
+Load the entry that was prepared with [`prepareNext()`](#preparenextplayerconfig), without waiting for the current entry to end.
 ```js
 this.$refs.kdp.loadNext()
 ```
@@ -99,7 +99,7 @@ this.$refs.kdp.getDuration((duration) => {
 ```
 
 ### `getCurrentAudioTrack(callback)`
-Returns the current audio trackId. See [onTracksAvailable(callback)](#onTracksAvailable(callback)).
+Returns the current audio trackId. See [onTracksAvailable(callback)](#ontracksavailablecallback).
 - `callback`: `fn(trackId)`
   - (string) `trackId`
 ```js
@@ -233,21 +233,21 @@ this.$refs.kdp.onSeeked(() => {
 Sent when tracks available.
 - `callback`: `fn(tracks)`
   - (JSON) `tracks`: JSON with the available tracks in the format:
-  ```json
+  ```js
   {
     audioTracks: [
       {
-        id: <id>,
-        title: <title>,
-        language: <language>
+        id: "id",
+        title: "title",
+        language: "language"
       },
       (...)
     ],
     textTracks: [
       {
-        id: <id>,
-        title: <title>,
-        language: <language>
+        id: "id",
+        title: "title",
+        language: "language"
       },
       (...)
   }
@@ -271,7 +271,7 @@ this.$refs.kdp.onStateChange((state) => {
 ## Data
 
 ### playerConfig
-Description of the player configuration. Used in [`prepare`](#prepare) and [`prepareNext`](#prepareNext).
+Description of the player configuration. Used in [`prepare`](#prepareplayerconfig) and [`prepareNext`](#preparenextplayerconfig).
 A media entry can have multiple sources that would be the same video in different formats. The player will choose the source more appropriate to the device.
 ```js
 {
