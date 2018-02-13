@@ -45,60 +45,60 @@ this.$refs.kdp.sendNotification("doSeek", 30);
 
 ### Available Notifications
 
-#### `prepare`
+#### `prepare` *(NOT IMPLEMENTED)*
 Prepare for playing an entry. Play when it’s ready.
 - (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
 ```js
 this.$refs.kdp.sendNotification('prepare', { /* player config */})
 ```
 
-#### `doPlay`
+#### `doPlay` *(NOT IMPLEMENTED)*
 Plays the video.
 ```js
 this.$refs.kdp.sendNotification('play')
 ```
 
-#### `doPause`
+#### `doPause` *(NOT IMPLEMENTED)*
 Pauses the video.
 ```js
 this.$refs.kdp.sendNotification('pause')
 ```
 
-#### `doSeek`
+#### `doSeek` *(NOT IMPLEMENTED)*
 Sets the play time of the video.
 - (float) time.
 ```js
 this.$refs.kdp.sendNotification('seek',time)
 ```
 
-#### `prepareNext`
+#### `prepareNext` *(NOT IMPLEMENTED)*
 Prepare for playing the next entry.
 - (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
 ```js
 this.$refs.kdp.sendNotification('prepareNext',({ /* player config */})
 ```
 
-#### `loadNext`
+#### `loadNext` *(NOT IMPLEMENTED)*
 Load the entry that was prepared with [`prepareNext()`](#preparenextplayerconfig), without waiting for the current entry to end.
 ```js
 this.$refs.kdp.sendNotification('loadNext')
 ```
 
-#### `selectTrack`
+#### `selectTrack` *(NOT IMPLEMENTED)*
 Selects a track by `trackId`. See [onTracksAvailable(callback)](#onTracksAvailable(callback)).
 - (string) trackId.
 ```js
 this.$refs.kdp.sendNotification('selectTrack', trackId)
 ```
 
-#### `changeVolume`
+#### `changeVolume` *(NOT IMPLEMENTED)*
 Changes the volume. The volume is a value between 0 and 1.
 - (float) volume.
 ```js
 this.$refs.kdp.sendNotification('changeVolume', volume)
 ```
 
-#### `getDuration`
+#### `getDuration` *(NOT IMPLEMENTED)*
 Returns the duration of the video.
 - `callback`: `fn(duration)` callback returning the duration of the video.
   - (float) `duration`
@@ -108,7 +108,7 @@ this.$refs.kdp.sendNotification('getDuration', duration => {
 })
 ```
 
-#### `getCurrentAudioTrack`
+#### `getCurrentAudioTrack` *(NOT IMPLEMENTED)*
 Returns the current audio trackId. See [onTracksAvailable(callback)](#ontracksavailablecallback).
 - `callback`: `fn(trackId)`
   - (string) `trackId`
@@ -118,7 +118,7 @@ this.$refs.kdp.sendNotification('getCurrentAudioTrack', trackId => {
 })
 ```
 
-#### `getCurrentTextTrack`
+#### `getCurrentTextTrack` *(NOT IMPLEMENTED)*
 Returns the current text trackId. See [onTracksAvailable(callback)](#onTracksAvailable(callback)).
 - `callback`: `fn(trackId)`
   - (string) `trackId`
@@ -128,7 +128,7 @@ this.$refs.kdp.sendNotification('getCurrentTextTrack', trackId => {
 })
 ```
 
-#### `getState`
+#### `getState` *(NOT IMPLEMENTED)*
 Returns the current state of the video.
 - `callback`: `fn(duration)` callback returning the state of the video.
   - (string) `state`: the state of the video (`idle`, `loading`, `ready`, `buffering`, `error`)
@@ -167,7 +167,7 @@ this.$refs.kdp.kUnbind();
 
 ### Event List
 
-#### `onTimeChange`
+#### `onTimeChange` *(NOT IMPLEMENTED)*
 Updates the callback each 200ms with the current time of the video.
 - `callback`: `fn(currentTime)` callback returning the current time of the video.
   - (float) `currentTime`
@@ -177,7 +177,7 @@ this.$refs.kdp.kBind('onTimeChange', (currentTime) => {
 })
 ```
 
-#### `playerStateChange`
+#### `playerStateChange` *(NOT IMPLEMENTED)*
 Dispatched when media player's state has changed.
 - `callback`: `fn(playerState)`
   - (string) `playerState`: MediaPlayerState: `uninitialized` / `loading` / `ready` / `playing` / `paused` / `buffering` / `playbackError`
@@ -187,7 +187,7 @@ this.$refs.kdp.kBind('playerStateChange', state => {
 })
 ```
 
-#### `onDurationChanged`
+#### `onDurationChanged` *(NOT IMPLEMENTED)*
 Sent when enough data is available that the media can be played, at least for a couple of frames.
 - `callback`: `fn()`
 ```js
@@ -196,7 +196,7 @@ this.$refs.kdp.kBind('onDurationChanged', newDuration => {
 })
 ```
 
-#### `onEnded`
+#### `onEnded` *(NOT IMPLEMENTED)*
 Sent when playback completes.
 - `callback`: `fn()`
 ```js
@@ -205,7 +205,7 @@ this.$refs.kdp.kBind('onEnded', () => {
 })
 ```
 
-#### `onLoadedMetadata`
+#### `onLoadedMetadata` *(NOT IMPLEMENTED)*
 The media’s metadata has finished loading; all attributes now contain as much useful information as they’re going to.
 - `callback`: `fn(metadata)`
   - (object) `metadata`
@@ -215,7 +215,7 @@ this.$refs.kdp.kBind('onLoadedMetadata', metadata => {
 })
 ```
 
-#### `onSeeking`
+#### `onSeeking` *(NOT IMPLEMENTED)*
 Sent when a seek operation begins.
 - `callback`: `fn()`
 ```js
@@ -224,7 +224,7 @@ this.$refs.kdp.kBind('onSeeking', () => {
 })
 ```
 
-#### `onSeeked`
+#### `onSeeked` *(NOT IMPLEMENTED)*
 Sent when a seek operation completes.
 - `callback`: `fn()`
 ```js
@@ -233,7 +233,7 @@ this.$refs.kdp.kBind('onSeeked', () => {
 })
 ```
 
-#### `onTracksAvailable`
+#### `onTracksAvailable` *(NOT IMPLEMENTED)*
 Sent when tracks available.
 - `callback`: `fn(tracks)`
   - (JSON) `tracks`: JSON with the available tracks in the format:
