@@ -29,207 +29,211 @@ Add the following line to the dependencies list in the build.gradle file for the
 
 ## Template
 ### `<weex-kdp>`
-Adds the `weex-kdp` plugin to the template.
+Adds the `weex-kdp` plugin to the template. See [Data: playerConfig](#playerconfig).
 ```html
 <weexKdp ref="kdp" playerConfig="{/* playerConfig */}"></weexKdp>
 ```
 
-## Methods
+## Calling methods
 
-### `prepare(playerConfig)`
+Use the **sendNotification** method to create custom notifications that instruct the player to perform an action, such as play, seek, or pause.
+
+**Example:**
+```js
+this.$refs.kdp.sendNotification("doSeek", 30);
+```
+
+### Available Notifications
+
+#### `prepare`
 Prepare for playing an entry. Play when it’s ready.
 - (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
 ```js
-this.$refs.kdp.prepare({ /* player config */})
+this.$refs.kdp.sendNotification('prepare', { /* player config */})
 ```
 
-### `play()`
+#### `doPlay`
 Plays the video.
 ```js
-this.$refs.kdp.play()
+this.$refs.kdp.sendNotification('play')
 ```
 
-### `pause()`
+#### `doPause`
 Pauses the video.
 ```js
-this.$refs.kdp.pause()
+this.$refs.kdp.sendNotification('pause')
 ```
 
-### `seek(time)`
+#### `doSeek`
 Sets the play time of the video.
 - (float) time.
 ```js
-this.$refs.kdp.seek(time)
+this.$refs.kdp.sendNotification('seek',time)
 ```
 
-### `prepareNext(playerConfig)`
+#### `prepareNext`
 Prepare for playing the next entry.
 - (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
 ```js
-this.$refs.kdp.prepareNext({ /* player config */})
+this.$refs.kdp.sendNotification('prepareNext',({ /* player config */})
 ```
 
-### `loadNext()`
+#### `loadNext`
 Load the entry that was prepared with [`prepareNext()`](#preparenextplayerconfig), without waiting for the current entry to end.
 ```js
-this.$refs.kdp.loadNext()
+this.$refs.kdp.sendNotification('loadNext')
 ```
 
-### `destroy()`
-Release player resources.
-```js
-this.$refs.kdp.destroy()
-```
-
-### `selectTrack(trackId)`
+#### `selectTrack`
 Selects a track by `trackId`. See [onTracksAvailable(callback)](#onTracksAvailable(callback)).
 - (string) trackId.
 ```js
-this.$refs.kdp.selectTrack(trackId)
+this.$refs.kdp.sendNotification('selectTrack', trackId)
 ```
 
-### `getDuration(callback)`
+#### `changeVolume`
+Changes the volume. The volume is a value between 0 and 1.
+- (float) volume.
+```js
+this.$refs.kdp.sendNotification('changeVolume', volume)
+```
+
+#### `getDuration`
 Returns the duration of the video.
 - `callback`: `fn(duration)` callback returning the duration of the video.
   - (float) `duration`
 ```js
-this.$refs.kdp.getDuration((duration) => {
+this.$refs.kdp.sendNotification('getDuration', duration => {
     console.log(duration)
 })
 ```
 
-### `getCurrentAudioTrack(callback)`
+#### `getCurrentAudioTrack`
 Returns the current audio trackId. See [onTracksAvailable(callback)](#ontracksavailablecallback).
 - `callback`: `fn(trackId)`
   - (string) `trackId`
 ```js
-this.$refs.kdp.getCurrentAudioTrack((trackId) => {
+this.$refs.kdp.sendNotification('getCurrentAudioTrack', trackId => {
     console.log(trackId)
 })
 ```
 
-### `getCurrentTextTrack(callback)`
+#### `getCurrentTextTrack`
 Returns the current text trackId. See [onTracksAvailable(callback)](#onTracksAvailable(callback)).
 - `callback`: `fn(trackId)`
   - (string) `trackId`
 ```js
-this.$refs.kdp.getCurrentTextTrack((trackId) => {
+this.$refs.kdp.sendNotification('getCurrentTextTrack', trackId => {
     console.log(trackId)
 })
 ```
 
-### `getState(callback)`
+#### `getState`
 Returns the current state of the video.
 - `callback`: `fn(duration)` callback returning the state of the video.
   - (string) `state`: the state of the video (`idle`, `loading`, `ready`, `buffering`, `error`)
 ```js
-this.$refs.kdp.getState((state) => {
+this.$refs.kdp.sendNotification('getState', state => {
     console.log(state)
 })
 ```
 
-## Events
-### `onTimeChange(callback)`
-Updates the callback each 500ms with the current time of the video.
+## Listening to Events
+
+Register player events with `kBind` and unregister events with `kUnbind`.
+
+### kBind(eventName, callback)
+Registers an event.
+- `eventName`: name of the event (See [Event List](#eventlist)).
+- `callback`: `fn(eventData)` callback of the event.
+```js
+this.$refs.kdp.kBind('onTimeChange', time => {
+		// time = the player's progress time in seconds
+	});
+```
+
+### kUnbind(eventName)
+Unregister an event.
+- `eventName`: name of the event (See [Event List](#eventlist)).
+```js
+this.$refs.kdp.kUnbind('onTimeChange');
+```
+
+### kUnbind()
+Unregister *all* events.
+```js
+this.$refs.kdp.kUnbind();
+```
+
+### Event List
+
+#### `onTimeChange`
+Updates the callback each 200ms with the current time of the video.
 - `callback`: `fn(currentTime)` callback returning the current time of the video.
   - (float) `currentTime`
 ```js
-this.$refs.kdp.onTimeChange((currentTime) => {
+this.$refs.kdp.kBind('onTimeChange', (currentTime) => {
     console.log(currentTime)
 })
 ```
 
-### `onCanPlay(callback)`
-Sent when enough data is available that the media can be played, at least for a couple of frames.
-- `callback`: `fn()`
+#### `playerStateChange`
+Dispatched when media player's state has changed.
+- `callback`: `fn(playerState)`
+  - (string) `playerState`: MediaPlayerState: `uninitialized` / `loading` / `ready` / `playing` / `paused` / `buffering` / `playbackError`
 ```js
-this.$refs.kdp.onCanPlay(() => {
-    console.log('Can Play')
+this.$refs.kdp.kBind('playerStateChange', state => {
+    console.log('player state: ' + state)
 })
 ```
 
-### `onDurationChanged(callback)`
+#### `onDurationChanged`
 Sent when enough data is available that the media can be played, at least for a couple of frames.
 - `callback`: `fn()`
 ```js
-this.$refs.kdp.onDurationChanged(() => {
-    console.log('Duration Changed')
+this.$refs.kdp.kBind('onDurationChanged', newDuration => {
+    console.log('Duration Changed to: ' + newDuration)
 })
 ```
 
-### `onEnded(callback)`
+#### `onEnded`
 Sent when playback completes.
 - `callback`: `fn()`
 ```js
-this.$refs.kdp.onEnded(() => {
+this.$refs.kdp.kBind('onEnded', () => {
     console.log('Ended')
 })
 ```
 
-### `onLoadedMetadata(callback)`
+#### `onLoadedMetadata`
 The media’s metadata has finished loading; all attributes now contain as much useful information as they’re going to.
 - `callback`: `fn(metadata)`
+  - (object) `metadata`
 ```js
-this.$refs.kdp.onLoadedMetadata((metadata) => {
-    console.log('Loaded Metadata')
+this.$refs.kdp.kBind('onLoadedMetadata', metadata => {
+    console.log('Loaded Metadata: ' + JSON.stringify(metadata))
 })
 ```
 
-### `onError(callback)`
-Sent when an error occurs.
-- `callback`: `fn()`
-```js
-this.$refs.kdp.onError(() => {
-    console.log('Error')
-})
-```
-
-### `onPlay(callback)`
-Sent when playback of the media starts after having been paused; that is, when playback is resumed after a prior pause event.
-- `callback`: `fn()`
-```js
-this.$refs.kdp.onPlay(() => {
-    console.log('Play')
-})
-```
-
-### `onPlaying(callback)`
-Sent when the media begins to play (either for the first time, after having been paused, or after ending and then restarting).
-- `callback`: `fn()`
-```js
-this.$refs.kdp.onPlaying(() => {
-    console.log('Playing')
-})
-```
-
-### `onPause(callback)`
-Sent when playback is paused.
-- `callback`: `fn()`
-```js
-this.$refs.kdp.onPause(() => {
-    console.log('Pause')
-})
-```
-
-### `onSeeking(callback)`
+#### `onSeeking`
 Sent when a seek operation begins.
 - `callback`: `fn()`
 ```js
-this.$refs.kdp.onSeeking(() => {
+this.$refs.kdp.kBind('onSeeking', () => {
     console.log('Seeking')
 })
 ```
 
-### `onSeeked(callback)`
+#### `onSeeked`
 Sent when a seek operation completes.
 - `callback`: `fn()`
 ```js
-this.$refs.kdp.onSeeked(() => {
+this.$refs.kdp.kBind('onSeeked', () => {
     console.log('Seeked')
 })
 ```
 
-### `onTracksAvailable(callback)`
+#### `onTracksAvailable`
 Sent when tracks available.
 - `callback`: `fn(tracks)`
   - (JSON) `tracks`: JSON with the available tracks in the format:
@@ -253,18 +257,8 @@ Sent when tracks available.
   }
   ```
 ```js
-this.$refs.kdp.onTracksAvailable((tracks) => {
+this.$refs.kdp.kBind('onTracksAvailable', tracks => {
     console.log('Tracks Available', tracks)
-})
-```
-
-### `onStateChange(callback)`
-Updates the callback whenever the state of the video load changes.
-- `callback`: `fn(state)`
-  - `state` (string): the state of the video load (`idle`, `loading`, `ready`, `buffering`, `error`)
-```js
-this.$refs.kdp.onStateChange((state) => {
-    console.log(state)
 })
 ```
 
@@ -293,8 +287,4 @@ A media entry can have multiple sources that would be the same video in differen
 ```
 # Developing the plugin
 
-See [How to develop](./doc/how-to-develop.md).
-
-also,
-
-See the [Plugin Development Guide](https://weex.apache.org/guide/create-a-plugin.html).
+See [How to develop](./doc/how-to-develop.md) and the [Plugin Development Guide](https://weex.apache.org/guide/create-a-plugin.html).
