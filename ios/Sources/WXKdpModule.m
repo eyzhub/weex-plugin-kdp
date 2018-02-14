@@ -21,8 +21,6 @@ WX_PlUGIN_EXPORT_MODULE(weexKdp, WXKdpModule)
 @synthesize weexInstance;
 
 WX_EXPORT_METHOD(@selector(show))
-WX_EXPORT_METHOD(@selector(getDuration:callback:))
-WX_EXPORT_METHOD(@selector(getCurrentTime:callback:))
 
 /**
  create actionsheet
@@ -32,20 +30,6 @@ WX_EXPORT_METHOD(@selector(getCurrentTime:callback:))
     UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"title" message:@"module weexKdp is created sucessfully" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"ok", nil];
     [alertview show];
     
-}
-
-- (void)getCurrentTime:(NSString *)elemRef callback:(WXModuleCallback)callback
-{
-    [self performBlockWithRef:elemRef block:^(WXKdpComponent *component) {
-        callback([NSNumber numberWithFloat:[component getCurrentTime]]);
-    }];
-}
-
-- (void)getDuration:(NSString *)elemRef callback:(WXModuleCallback)callback
-{
-    [self performBlockWithRef:elemRef block:^(WXKdpComponent *component) {
-        callback([NSNumber numberWithFloat:[component getDuration]]);
-    }];
 }
 
 - (void)performBlockWithRef:(NSString *)elemRef block:(void (^)(WXKdpComponent *))block {

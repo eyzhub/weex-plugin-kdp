@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<text style="margin-bottom: 20px;">weex kdp plugin example</text>
-		<weexKdp ref="kdp" class="kdp" style="height:400"></weexKdp>
+		<weexKdp ref="kdp" class="kdp" style="height:400" :playerConfig="playerConfig"></weexKdp>
     <div class="controls">
       <button class="controlButton" @click="play">
         <text style="color:#fff">&#9658;</text>
@@ -23,6 +23,11 @@
       <text>Time: </text><text class="time">{{parsedCurrentTime}} / {{parsedTotalTime}}</text>
       <text>State: </text><text class="time">{{state}}</text>
     </div>
+    <div class="controls">
+      <button class="controlButton" @click="changeMedia">
+        <text style="color:#fff">Change Video</text>
+      </button>
+    </div>
 	</div>
 </template>
 
@@ -33,7 +38,18 @@
 		data: {
       currentTime: 0,
       duration: 0,
-      str: ''
+      str: '',
+      playerConfig:
+        {
+          entryId: 'sintel',
+          sources: [
+            {
+              contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/playManifest/entryId/1_w9zx2eti/format/applehttp/protocol/https/a.m3u8',
+              mediaFormat: 'hls' // e.g. ".hls"
+            }
+          ]
+        }
+
 		},
     computed: {
       parsedCurrentTime: function () {
@@ -57,7 +73,7 @@
         this.$refs.kdp.kBind('time', (currentTime) => {
           this.currentTime = currentTime;
         });
-        this.$refs.kdp.kBind('stateChange', (state, bla) => {
+        this.$refs.kdp.kBind('stateChange', (state) => {
           this.state = state;
           console.log('state: ', state);
         });
@@ -75,8 +91,18 @@
         this.$refs.kdp.getProperty('time', (currentTime) => {
           console.log(currentTime);
         });
+      },
+      changeMedia() {
+        this.$refs.kdp.sendNotification('changeMediaEntry', {
+          entryId: 'Kaltura Media',
+          sources: [
+            {
+              contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/sp/221584100/playManifest/entryId/1_vl96wf1o/format/applehttp/protocol/https/a.m3u8',
+              mediaFormat: 'hls' // e.g. ".hls"
+            }
+          ]
+        });
       }
-
 		},
 		created() {
 			console.log(this.$refs.kdp);

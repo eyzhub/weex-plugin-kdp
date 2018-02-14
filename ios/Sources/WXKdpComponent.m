@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSTimer *timeTracker;
 @property (strong, nonatomic) WXModuleKeepAliveCallback trackTimeCallback;
 
+@property (strong, nonatomic) NSDictionary *playerConfig;
 @property (strong, nonatomic) NSMutableDictionary *eventCallbacks;
 
 @end
@@ -49,11 +50,13 @@ WX_EXPORT_METHOD(@selector(seek:))
     events:(nullable NSArray *)events
     weexInstance:(WXSDKInstance *)weexInstance {
     
+    PlayKitManager.logLevel = PKLogLevelInfo;
+    
     self = [super initWithRef:ref type:type styles:styles attributes:attributes events:events weexInstance:weexInstance];
     
     [self initializeEventCallbackDictionary];
     
-    PlayKitManager.logLevel = PKLogLevelInfo;
+    self.playerConfig = [attributes objectForKey:@"playerConfig"];
     
     if (self )
     {
@@ -130,20 +133,14 @@ WX_EXPORT_METHOD(@selector(seek:))
 
 - (void)preparePlayer {
     self.player.view = self.kdpview;
-    NSURL *contentURL = [[NSURL alloc] initWithString:@"https://cdnapisec.kaltura.com/p/2215841/playManifest/entryId/1_w9zx2eti/format/applehttp/protocol/https/a.m3u8"];
-    
-    // create media source and initialize a media entry with that source
-    NSString *entryId = @"sintel";
-    PKMediaSource* source = [[PKMediaSource alloc] init:entryId contentUrl:contentURL mimeType:nil drmData:nil mediaFormat:MediaFormatHls];
-    NSArray<PKMediaSource*>* sources = [[NSArray alloc] initWithObjects:source, nil];
-    // setup media entry
-    PKMediaEntry *mediaEntry = [[PKMediaEntry alloc] init:entryId sources:sources duration:-1];
-    
-    // create media config
-    MediaConfig *mediaConfig = [[MediaConfig alloc] initWithMediaEntry:mediaEntry startTime:0.0];
-    
+    MediaConfig* mediaConfig = [WXKdpComponent makeMediaConfig:self.playerConfig];
     // prepare the player
-    [self.player prepare:mediaConfig];
+    if (mediaConfig != nil) {
+        [self.player prepare:mediaConfig];
+    }
+    else {
+        NSLog(@"No playerConfig available");
+    }
 }
 
 
@@ -159,9 +156,12 @@ WX_EXPORT_METHOD(@selector(seek:))
             [self.player pause];
         }
     }
-    
     else if ([action isEqualToString:@"doSeek"]) {
         self.player.currentTime = [(NSNumber*)data floatValue];
+    }
+    else if ([action isEqualToString:@"changeMediaEntry"]) {
+        self.playerConfig = (NSDictionary*)data;
+        [self preparePlayer];
     }
     
 }
@@ -235,6 +235,32 @@ WX_EXPORT_METHOD(@selector(seek:))
         default:
             return @"undefined";
     }
+}
+
++(MediaConfig*)makeMediaConfig:(NSDictionary*)playerConfig
+{
+    if (playerConfig == nil) {
+        return nil;
+    }
+    
+    // create media source and initialize a media entry with that source
+    NSString *entryId = [playerConfig objectForKey:@"entryId"];
+    
+    NSArray<NSDictionary*>* configSources = [playerConfig objectForKey:@"sources"];
+    NSDictionary* configSource;
+    NSMutableArray<PKMediaSource*>* sources = [[NSMutableArray alloc] initWithCapacity:[configSources count]];
+    for (configSource in configSources) {
+        NSURL *contentURL = [[NSURL alloc] initWithString:[configSource objectForKey:@"contentUrl"]];
+        PKMediaSource* source = [[PKMediaSource alloc] init:entryId contentUrl:contentURL mimeType:nil drmData:nil mediaFormat:MediaFormatHls];
+        [sources addObject:source];
+    }
+    
+    // setup media entry
+    PKMediaEntry *mediaEntry = [[PKMediaEntry alloc] init:entryId sources:sources duration:-1];
+    
+    // create media config
+    MediaConfig *mediaConfig = [[MediaConfig alloc] initWithMediaEntry:mediaEntry startTime:0.0];
+    return mediaConfig;
 }
 
 #pragma mark - publish method

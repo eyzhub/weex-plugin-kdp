@@ -29,9 +29,9 @@ Add the following line to the dependencies list in the build.gradle file for the
 
 ## Template
 ### `<weex-kdp>`
-Adds the `weex-kdp` plugin to the template. See [Data: playerConfig](#playerconfig).
+Adds the `weex-kdp` plugin to the template. See [Data: MediaEntry](#MediaEntry).
 ```html
-<weexKdp ref="kdp" playerConfig="{/* playerConfig */}"></weexKdp>
+<weexKdp ref="kdp" MediaEntry="{/* MediaEntry */}"></weexKdp>
 ```
 
 ## Calling methods
@@ -45,11 +45,11 @@ this.$refs.kdp.sendNotification("doSeek", 30);
 
 ### Available Notifications
 
-#### `prepare` *(NOT IMPLEMENTED)*
+#### `changeMediaEntry` *(ios)*
 Prepare for playing an entry. Play when it’s ready.
-- (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
+- (JSON) `MediaEntry`: see [Data: MediaEntry](#mediaentry).
 ```js
-this.$refs.kdp.sendNotification('prepare', { /* player config */})
+this.$refs.kdp.sendNotification('prepare', { /* media entry */});
 ```
 
 #### `doPlay` *(iOS)*
@@ -76,19 +76,6 @@ Changes the volume. The volume is a value between 0 and 1.
 - (float) volume.
 ```js
 this.$refs.kdp.sendNotification('changeVolume', volume)
-```
-
-#### `prepareNext` *(NOT IMPLEMENTED)*
-Prepare for playing the next entry.
-- (JSON) `playerConfig`: see [Data: playerConfig](#playerconfig).
-```js
-this.$refs.kdp.sendNotification('prepareNext',({ /* player config */})
-```
-
-#### `loadNext` *(NOT IMPLEMENTED)*
-Load the entry that was prepared with [`prepareNext()`](#preparenextplayerconfig), without waiting for the current entry to end.
-```js
-this.$refs.kdp.sendNotification('loadNext')
 ```
 
 #### `selectTrack` *(NOT IMPLEMENTED)*
@@ -272,25 +259,18 @@ this.$refs.kdp.kBind('tracksAvailable', tracks => {
 
 ## Data
 
-### playerConfig
-Description of the player configuration. Used in [`prepare`](#prepareplayerconfig) and [`prepareNext`](#preparenextplayerconfig).
+### MediaEntry
+Description of the player configuration. Used in [`prepare`](#preparemediaentry) and [`prepareNext`](#preparenextmediaentry).
 A media entry can have multiple sources that would be the same video in different formats. The player will choose the source more appropriate to the device.
 ```js
 {
-  mediaEntry: {
     id: 'entryId',
     sources: [
       {
-        sourceId: 'sourceId',
         contentUrl: 'url',
         mediaFormat: 'mediaFormat' // e.g. ".hls"
-      },
-      // ...
+      }
     ]
-  },
-  startTime: 0, // optional, default 0
-  subtitleLanguage: "", //optional
-  audioLanguage : "" //optional
 }
 ```
 # Developing the plugin
