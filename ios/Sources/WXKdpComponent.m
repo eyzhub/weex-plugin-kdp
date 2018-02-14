@@ -17,15 +17,16 @@
 @property (strong, nonatomic) NSTimer *timeTracker;
 @property (strong, nonatomic) WXModuleKeepAliveCallback trackTimeCallback;
 
+@property (strong, nonatomic) NSMutableDictionary *eventCallbacks;
+
 @end
 
 @implementation WXKdpComponent
 
 WX_PlUGIN_EXPORT_COMPONENT(weexKdp,WXKdpComponent)
-WX_EXPORT_METHOD(@selector(play))
-WX_EXPORT_METHOD(@selector(pause))
-WX_EXPORT_METHOD(@selector(getDuration:))
-WX_EXPORT_METHOD(@selector(getCurrentTime:))
+WX_EXPORT_METHOD(@selector(sendNotification:data:))
+WX_EXPORT_METHOD(@selector(getProperty:callback:))
+WX_EXPORT_METHOD(@selector(kBind:callback:))
 WX_EXPORT_METHOD(@selector(trackTime:))
 WX_EXPORT_METHOD(@selector(seek:))
 
@@ -47,7 +48,10 @@ WX_EXPORT_METHOD(@selector(seek:))
     attributes:(nullable NSDictionary *)attributes
     events:(nullable NSArray *)events
     weexInstance:(WXSDKInstance *)weexInstance {
+    
     self = [super initWithRef:ref type:type styles:styles attributes:attributes events:events weexInstance:weexInstance];
+    
+    [self initializeEventCallbackDictionary];
     
     PlayKitManager.logLevel = PKLogLevelInfo;
     
@@ -83,6 +87,12 @@ WX_EXPORT_METHOD(@selector(seek:))
     }
     
     return self;
+}
+
+- (void)initializeEventCallbackDictionary
+{
+    self.eventCallbacks = [NSMutableDictionary dictionary];
+    [self.eventCallbacks setObject: [NSMutableArray array]  forKey: @"timeChange"];
 }
 
 - (BOOL)isViewLoaded
@@ -136,15 +146,94 @@ WX_EXPORT_METHOD(@selector(seek:))
     [self.player prepare:mediaConfig];
 }
 
-- (void)play {
-    if(!self.player.isPlaying) {
-        [self.player play];
+
+- (void)sendNotification:(NSString*)action data:(NSValue*)data {
+    
+    if ([action isEqualToString:@"doPlay"]) {
+        if(!self.player.isPlaying) {
+            [self.player play];
+        }
+    }
+    else if ([action isEqualToString:@"doPause"]) {
+        if(self.player.isPlaying) {
+            [self.player pause];
+        }
+    }
+    
+    else if ([action isEqualToString:@"doSeek"]) {
+        self.player.currentTime = [(NSNumber*)data floatValue];
+    }
+    
+}
+
+- (void)getProperty:(NSString*)property callback:(WXModuleCallback)callback {
+    
+    if ([property isEqualToString:@"time"]) {
+        [self getCurrentTime:callback];
+    }
+    else if ([property isEqualToString:@"duration"]) {
+        [self getDuration:callback];
+    }
+    else if ([property isEqualToString:@"state"]) {
+        [self getDuration:callback];
     }
 }
 
-- (void)pause {
-    if(self.player.isPlaying) {
-        [self.player pause];
+-(void)kBind:(NSString*)event callback:(WXModuleKeepAliveCallback)callback {
+
+    [self.eventCallbacks setObject: callback forKey: event];
+    
+    if ([event isEqualToString:@"time"]) {
+        [self trackTime:callback];
+    }
+    else if ([event isEqualToString:@"stateChange"]) {
+        [self.player addObserver:self
+            events:@[PlayerEvent.stateChanged]
+            block:^(PKEvent * _Nonnull event) {
+                PlayerState oldState = event.oldState;
+                PlayerState newState = event.newState;
+                NSLog(@"State Chnaged Event:: oldState: %d | newState: %d", (int)oldState, (int)newState);
+                callback(@{
+                           @"oldState":[WXKdpComponent stringFromPlayerState:oldState],
+                           @"newState":[WXKdpComponent stringFromPlayerState:newState]
+                        }, YES);
+            }];
+        
+        [self.player addObserver:self
+           event:PlayerEvent.playing
+           block:^(PKEvent * _Nonnull event) {
+               callback(@{@"newState":@"playing"}, YES);
+           }];
+        [self.player addObserver:self
+           event:PlayerEvent.pause
+           block:^(PKEvent * _Nonnull event) {
+               callback(@{@"newState":@"paused"}, YES);
+           }];
+    }
+}
+
+-(void)kUnbind:(NSString*)event {
+    
+    [self.eventCallbacks removeObjectForKey: event];
+}
+
++(NSString*)stringFromPlayerState:(PlayerState)state
+{
+    switch ((int)state) {
+        case (int)PlayerStateIdle:
+            return @"idle";
+        case (int)PlayerStateEnded:
+            return @"ended";
+        case (int)PlayerStateError:
+            return @"error";
+        case (int)PlayerStateReady:
+            return @"ready";
+        case (int)PlayerStateUnknown:
+            return @"unknown";
+        case (int)PlayerStateBuffering:
+            return @"buffering";
+        default:
+            return @"undefined";
     }
 }
 
@@ -166,14 +255,6 @@ WX_EXPORT_METHOD(@selector(seek:))
     callback([NSNumber numberWithFloat:self.player.duration]);
 }
 
-- (float)getCurrentTime {
-    if (!self.player) {
-        return 0.0;
-    }
-    
-    return self.player.currentTime;
-}
-
 - (void)getCurrentTime:(WXModuleCallback)callback {
     if (!self.player) {
         callback([NSNumber numberWithFloat:0.0]);
@@ -185,12 +266,13 @@ WX_EXPORT_METHOD(@selector(seek:))
 -(void)trackTime:(WXModuleKeepAliveCallback) callback {
     self.trackTimeCallback = callback;
     if (!self.timeTracker) {
-        self.timeTracker = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(trackTimeUpdate) userInfo:nil repeats:YES];
+        self.timeTracker = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(trackTimeUpdate) userInfo:nil repeats:YES];
     }
 }
     
 - (void)trackTimeUpdate {
-    self.trackTimeCallback([NSNumber numberWithFloat:self.player.currentTime], YES);
+    ((WXModuleKeepAliveCallback)[self.eventCallbacks objectForKey:@"time"])([NSNumber numberWithFloat:self.player.currentTime], YES);
+    //self.trackTimeCallback([NSNumber numberWithFloat:self.player.currentTime], YES);
 }
 
 - (void)seek:(float)to {
