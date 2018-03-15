@@ -163,7 +163,6 @@ WX_EXPORT_METHOD(@selector(seek:))
         self.playerConfig = (NSDictionary*)data;
         [self preparePlayer];
     }
-    
 }
 
 - (void)getProperty:(NSString*)property callback:(WXModuleCallback)callback {

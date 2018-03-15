@@ -1,5 +1,5 @@
 {
-  "name": "weex-kdp",
+  "name": "weex-plugin-kdp",
   "version": "0.0.1",
   "main": "./js/build/main.js",
   "description": "weex-kdp extend for weex",
@@ -16,7 +16,7 @@
     "//": "安装类型为maven",
     "type": "maven",
     "groupId": "org.weex.plugin",
-    "name": "weexkdp",
+    "name": "weex-kdp",
     "version": "0.0.1"
   },
   "keywords": [
