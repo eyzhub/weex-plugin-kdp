@@ -4,7 +4,7 @@ Kaltura Dynamic Player implementation as Weex Components
 ## Installing the plugin in your project
 ### Using `weexpack`:
 ```
-weex plugin add weex-kdp
+weex plugin add weex-plugin-kdp
 ```
 
 ### Manual integration:
