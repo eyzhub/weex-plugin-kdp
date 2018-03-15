@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.ios.deployment_target = "9.0"
 
-  s.source = { :git => "https://github.com/natjs/weex-nat-device-battery.git", :tag => s.version }
+  s.source = { :git => "https://github.com/eyzhub/weex-kdp.git", :tag => s.version }
   s.source_files  = "ios/Sources/*.{h,m,mm}"
 
   s.requires_arc = true
