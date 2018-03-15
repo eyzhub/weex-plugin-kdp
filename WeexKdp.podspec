@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
     LICENSE
   }
   s.authors      = {
-                     "yourname" =>"youreamail"
+                     "Tiago Alves" =>"tralves@gmail.com"
                    }
   s.platform     = :ios
   s.ios.deployment_target = "9.0"
