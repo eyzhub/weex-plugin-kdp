@@ -21,6 +21,8 @@ Pod::Spec.new do |s|
                    }
   s.platform     = :ios
   s.ios.deployment_target = "9.0"
+  s.frameworks  = 'Foundation', 'AVFoundation'
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
 
   s.source = { :git => "https://github.com/eyzhub/weex-kdp.git", :tag => s.version }
   s.source_files  = "ios/Sources/*.{h,m,mm}"

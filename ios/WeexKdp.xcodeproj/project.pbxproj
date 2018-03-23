@@ -7,22 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		691661211FC4E2540014BF84 /* WeexKdpComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6916611F1FC4E2530014BF84 /* WeexKdpComponent.m */; };
-		691661221FC4E2540014BF84 /* WeexKdpComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 691661201FC4E2540014BF84 /* WeexKdpComponent.h */; };
-		C45843FC1E84F39100D88C0B /* WeexKdpModule.h in Headers */ = {isa = PBXBuildFile; fileRef = C45843F61E84F39100D88C0B /* WeexKdpModule.h */; };
-		C45843FD1E84F39100D88C0B /* WeexKdpModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C45843F71E84F39100D88C0B /* WeexKdpModule.m */; };
-		FD3CB0A160E9477BE2AD0B3B /* Pods_WeexKdp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B5DBF43FCF4F7B8684C779 /* Pods_WeexKdp.framework */; };
+		695DBDF320634DEA006D0ACC /* PlayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695DBDF420634DEA006D0ACC /* PlayKit.framework */; };
+		6990E042205FCCAF00A80A84 /* WXKdpComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6990E03E205FCCAF00A80A84 /* WXKdpComponent.m */; };
+		6990E043205FCCAF00A80A84 /* WXKdpComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6990E03F205FCCAF00A80A84 /* WXKdpComponent.h */; };
+		6990E044205FCCAF00A80A84 /* WXKdpModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6990E040205FCCAF00A80A84 /* WXKdpModule.m */; };
+		6990E045205FCCAF00A80A84 /* WXKdpModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 6990E041205FCCAF00A80A84 /* WXKdpModule.h */; };
+		6990E049205FE27400A80A84 /* KalturaNetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6990E04A205FE27400A80A84 /* KalturaNetKit.framework */; };
+		6990E04D205FE27C00A80A84 /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6990E04E205FE27C00A80A84 /* Log.framework */; };
+		6990E04F205FE27F00A80A84 /* PlayKitUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6990E050205FE27F00A80A84 /* PlayKitUtils.framework */; };
+		6990E051205FE28300A80A84 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6990E052205FE28300A80A84 /* SwiftyJSON.framework */; };
+		6990E053205FE28600A80A84 /* SwiftyXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6990E054205FE28600A80A84 /* SwiftyXMLParser.framework */; };
+		6990E055205FE28900A80A84 /* WeexSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6990E056205FE28900A80A84 /* WeexSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0F1C92092FF9562A4B475501 /* Pods-WeexKdp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeexKdp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeexKdp/Pods-WeexKdp.debug.xcconfig"; sourceTree = "<group>"; };
-		6916611F1FC4E2530014BF84 /* WeexKdpComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeexKdpComponent.m; sourceTree = "<group>"; };
-		691661201FC4E2540014BF84 /* WeexKdpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeexKdpComponent.h; sourceTree = "<group>"; };
+		695DBDF420634DEA006D0ACC /* PlayKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlayKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E03C205FCBA900A80A84 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6990E03E205FCCAF00A80A84 /* WXKdpComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXKdpComponent.m; sourceTree = "<group>"; };
+		6990E03F205FCCAF00A80A84 /* WXKdpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXKdpComponent.h; sourceTree = "<group>"; };
+		6990E040205FCCAF00A80A84 /* WXKdpModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXKdpModule.m; sourceTree = "<group>"; };
+		6990E041205FCCAF00A80A84 /* WXKdpModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXKdpModule.h; sourceTree = "<group>"; };
+		6990E04A205FE27400A80A84 /* KalturaNetKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KalturaNetKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E04C205FE27800A80A84 /* PlayKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlayKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E04E205FE27C00A80A84 /* Log.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Log.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E050205FE27F00A80A84 /* PlayKitUtils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlayKitUtils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E052205FE28300A80A84 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E054205FE28600A80A84 /* SwiftyXMLParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyXMLParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6990E056205FE28900A80A84 /* WeexSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WeexSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87F9AEB97654FF7EEA032F16 /* Pods-WeexKdp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeexKdp.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeexKdp/Pods-WeexKdp.release.xcconfig"; sourceTree = "<group>"; };
 		C45843E41E84EF5B00D88C0B /* WeexKdp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeexKdp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C45843EF1E84EF7B00D88C0B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C45843F61E84F39100D88C0B /* WeexKdpModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeexKdpModule.h; sourceTree = "<group>"; };
-		C45843F71E84F39100D88C0B /* WeexKdpModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeexKdpModule.m; sourceTree = "<group>"; };
 		D2B5DBF43FCF4F7B8684C779 /* Pods_WeexKdp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeexKdp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -31,7 +46,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD3CB0A160E9477BE2AD0B3B /* Pods_WeexKdp.framework in Frameworks */,
+				695DBDF320634DEA006D0ACC /* PlayKit.framework in Frameworks */,
+				6990E055205FE28900A80A84 /* WeexSDK.framework in Frameworks */,
+				6990E053205FE28600A80A84 /* SwiftyXMLParser.framework in Frameworks */,
+				6990E051205FE28300A80A84 /* SwiftyJSON.framework in Frameworks */,
+				6990E04F205FE27F00A80A84 /* PlayKitUtils.framework in Frameworks */,
+				6990E04D205FE27C00A80A84 /* Log.framework in Frameworks */,
+				6990E049205FE27400A80A84 /* KalturaNetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +62,15 @@
 		248CB2E7B700A3049EE0727E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				695DBDF420634DEA006D0ACC /* PlayKit.framework */,
+				6990E056205FE28900A80A84 /* WeexSDK.framework */,
+				6990E054205FE28600A80A84 /* SwiftyXMLParser.framework */,
+				6990E052205FE28300A80A84 /* SwiftyJSON.framework */,
+				6990E050205FE27F00A80A84 /* PlayKitUtils.framework */,
+				6990E04E205FE27C00A80A84 /* Log.framework */,
+				6990E04C205FE27800A80A84 /* PlayKit.framework */,
+				6990E04A205FE27400A80A84 /* KalturaNetKit.framework */,
+				6990E03C205FCBA900A80A84 /* AVFoundation.framework */,
 				D2B5DBF43FCF4F7B8684C779 /* Pods_WeexKdp.framework */,
 			);
 			name = Frameworks;
@@ -68,10 +98,10 @@
 		C45843F11E84F39000D88C0B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				691661201FC4E2540014BF84 /* WeexKdpComponent.h */,
-				6916611F1FC4E2530014BF84 /* WeexKdpComponent.m */,
-				C45843F61E84F39100D88C0B /* WeexKdpModule.h */,
-				C45843F71E84F39100D88C0B /* WeexKdpModule.m */,
+				6990E03F205FCCAF00A80A84 /* WXKdpComponent.h */,
+				6990E03E205FCCAF00A80A84 /* WXKdpComponent.m */,
+				6990E041205FCCAF00A80A84 /* WXKdpModule.h */,
+				6990E040205FCCAF00A80A84 /* WXKdpModule.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -92,8 +122,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C45843FC1E84F39100D88C0B /* WeexKdpModule.h in Headers */,
-				691661221FC4E2540014BF84 /* WeexKdpComponent.h in Headers */,
+				6990E043205FCCAF00A80A84 /* WXKdpComponent.h in Headers */,
+				6990E045205FCCAF00A80A84 /* WXKdpModule.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,8 +237,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				691661211FC4E2540014BF84 /* WeexKdpComponent.m in Sources */,
-				C45843FD1E84F39100D88C0B /* WeexKdpModule.m in Sources */,
+				6990E044205FCCAF00A80A84 /* WXKdpModule.m in Sources */,
+				6990E042205FCCAF00A80A84 /* WXKdpComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

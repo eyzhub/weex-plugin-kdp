@@ -12,5 +12,3 @@ end
 target 'WeexKdp' do
     common
 end
-
-
