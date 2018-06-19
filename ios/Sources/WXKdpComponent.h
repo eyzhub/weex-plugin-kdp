@@ -10,8 +10,8 @@
 
 #import <UIKit/UIKit.h>
 #import <WeexSDK/WXComponent.h>
-#import <PlayKit/PlayKit-Swift.h>
 #import <WeexSDK/WeexSDK.h>
+@import PlayKit;
 
 @interface WXKdpComponent : WXComponent
 

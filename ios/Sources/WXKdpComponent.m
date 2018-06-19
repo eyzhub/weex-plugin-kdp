@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 #import "WXKdpComponent.h"
-#import <PlayKit/PlayKit-Swift.h>
 #import <WeexPluginLoader/WeexPluginLoader.h>
+@import PlayKit;
 
 @interface WXKdpComponent()<PlayerDelegate>
 
@@ -49,46 +49,46 @@ WX_EXPORT_METHOD(@selector(seek:))
     attributes:(nullable NSDictionary *)attributes
     events:(nullable NSArray *)events
     weexInstance:(WXSDKInstance *)weexInstance {
-    
+
     PlayKitManager.logLevel = PKLogLevelInfo;
-    
+
     self = [super initWithRef:ref type:type styles:styles attributes:attributes events:events weexInstance:weexInstance];
-    
+
     [self initializeEventCallbackDictionary];
-    
+
     self.playerConfig = [attributes objectForKey:@"playerConfig"];
-    
+
     if (self )
     {
         CGPoint origin = [[UIScreen mainScreen] bounds].origin;
         CGSize size = [[UIScreen mainScreen] bounds].size;
-        
+
         if (styles[@"left"])
         {
             origin.x = [styles[@"left"] floatValue];
         }
-        
+
         if (styles[@"top"])
         {
             origin.y = [styles[@"top"] floatValue];
         }
-        
+
         if (styles[@"width"])
         {
             size.width = [styles[@"width"] floatValue];
         }
-        
+
         if (styles[@"height"])
         {
             size.height = [styles[@"height"] floatValue];
         }
-        
+
         self.frame = CGRectMake(origin.x, origin.y, size.width, size.height);
-        
+
         self.componentFrame = self.frame;
-        
+
     }
-    
+
     return self;
 }
 
@@ -113,7 +113,7 @@ WX_EXPORT_METHOD(@selector(seek:))
         // 2. Register events if have ones.
         // Event registeration must be after loading the player successfully to make sure events are added,
         // and before prepare to make sure no events are missed (when calling prepare player starts buffering and sending events)
-        
+
         // 3. Prepare the player (can be called at a later stage, preparing starts buffering the video)
         [self preparePlayer];
     } else {
@@ -145,7 +145,7 @@ WX_EXPORT_METHOD(@selector(seek:))
 
 
 - (void)sendNotification:(NSString*)action data:(NSValue*)data {
-    
+
     if ([action isEqualToString:@"doPlay"]) {
         if(!self.player.isPlaying) {
             [self.player play];
@@ -166,7 +166,7 @@ WX_EXPORT_METHOD(@selector(seek:))
 }
 
 - (void)getProperty:(NSString*)property callback:(WXModuleCallback)callback {
-    
+
     if ([property isEqualToString:@"time"]) {
         [self getCurrentTime:callback];
     }
@@ -181,7 +181,7 @@ WX_EXPORT_METHOD(@selector(seek:))
 -(void)kBind:(NSString*)event callback:(WXModuleKeepAliveCallback)callback {
 
     [self.eventCallbacks setObject: callback forKey: event];
-    
+
     if ([event isEqualToString:@"time"]) {
         [self trackTime:callback];
     }
@@ -197,7 +197,7 @@ WX_EXPORT_METHOD(@selector(seek:))
                            @"newState":[WXKdpComponent stringFromPlayerState:newState]
                         }, YES);
             }];
-        
+
         [self.player addObserver:self
            event:PlayerEvent.playing
            block:^(PKEvent * _Nonnull event) {
@@ -212,7 +212,7 @@ WX_EXPORT_METHOD(@selector(seek:))
 }
 
 -(void)kUnbind:(NSString*)event {
-    
+
     [self.eventCallbacks removeObjectForKey: event];
 }
 
@@ -241,10 +241,10 @@ WX_EXPORT_METHOD(@selector(seek:))
     if (playerConfig == nil) {
         return nil;
     }
-    
+
     // create media source and initialize a media entry with that source
     NSString *entryId = [playerConfig objectForKey:@"entryId"];
-    
+
     NSArray<NSDictionary*>* configSources = [playerConfig objectForKey:@"sources"];
     NSDictionary* configSource;
     NSMutableArray<PKMediaSource*>* sources = [[NSMutableArray alloc] initWithCapacity:[configSources count]];
@@ -253,10 +253,10 @@ WX_EXPORT_METHOD(@selector(seek:))
         PKMediaSource* source = [[PKMediaSource alloc] init:entryId contentUrl:contentURL mimeType:nil drmData:nil mediaFormat:MediaFormatHls];
         [sources addObject:source];
     }
-    
+
     // setup media entry
     PKMediaEntry *mediaEntry = [[PKMediaEntry alloc] init:entryId sources:sources duration:-1];
-    
+
     // create media config
     MediaConfig *mediaConfig = [[MediaConfig alloc] initWithMediaEntry:mediaEntry startTime:0.0];
     return mediaConfig;
@@ -267,7 +267,7 @@ WX_EXPORT_METHOD(@selector(seek:))
     if (!self.player) {
         return 0.0;
     }
-    
+
     float d = self.player.duration;
     return d;
 }
@@ -276,7 +276,7 @@ WX_EXPORT_METHOD(@selector(seek:))
     if (!self.player) {
         callback([NSNumber numberWithFloat:0.0]);
     }
-    
+
     callback([NSNumber numberWithFloat:self.player.duration]);
 }
 
@@ -284,7 +284,7 @@ WX_EXPORT_METHOD(@selector(seek:))
     if (!self.player) {
         callback([NSNumber numberWithFloat:0.0]);
     }
-    
+
     callback([NSNumber numberWithFloat:self.player.currentTime]);
 }
 
@@ -294,7 +294,7 @@ WX_EXPORT_METHOD(@selector(seek:))
         self.timeTracker = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(trackTimeUpdate) userInfo:nil repeats:YES];
     }
 }
-    
+
 - (void)trackTimeUpdate {
     ((WXModuleKeepAliveCallback)[self.eventCallbacks objectForKey:@"time"])([NSNumber numberWithFloat:self.player.currentTime], YES);
     //self.trackTimeCallback([NSNumber numberWithFloat:self.player.currentTime], YES);

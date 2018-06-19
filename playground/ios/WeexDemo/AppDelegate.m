@@ -31,19 +31,19 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    
+
     [self initWeexSDK];
-    
+
     self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:[self demoController]];
     [self.window makeKeyAndVisible];
-    
+
     [self startSplashScreen];
-    
+
 #if DEBUG
     // check if there are any UI changes on main thread.
     [UIView wx_checkUIThread];
 #endif
-    
+
     return YES;
 }
 
@@ -57,7 +57,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    
+
 #ifdef UITEST
 #if !TARGET_IPHONE_SIMULATOR
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -88,25 +88,25 @@
     [WXAppConfiguration setAppGroup:@"AliApp"];
     [WXAppConfiguration setAppName:@"WeexDemo"];
     [WXAppConfiguration setExternalUserAgent:@"ExternalUA"];
-    
+
     [WXSDKEngine initSDKEnvironment];
-    
+
     [WXSDKEngine registerHandler:[WXImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
     [WXSDKEngine registerHandler:[WXEventModule new] withProtocol:@protocol(WXEventModuleProtocol)];
-    
+
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
     [WXSDKEngine registerModule:@"syncTest" withClass:[WXSyncTestModule class]];
-    
+
 #if !(TARGET_IPHONE_SIMULATOR)
     [self checkUpdate];
 #endif
-    
+
 #ifdef DEBUG
     [self atAddPlugin];
     [WXDebugTool setDebug:YES];
     [WXLog setLogLevel:WXLogLevelLog];
-    
+
     #ifndef UITEST
         [[ATManager shareInstance] show];
     #endif
@@ -119,29 +119,29 @@
 - (UIViewController *)demoController
 {
     UIViewController *demo = [[WXDemoViewController alloc] init];
-    
+
 #if DEBUG
     //If you are debugging in device , please change the host to current IP of your computer.
     ((WXDemoViewController *)demo).url = [NSURL URLWithString:HOME_URL];
 #else
     ((WXDemoViewController *)demo).url = [NSURL URLWithString:BUNDLE_URL];
 #endif
-    
+
 #ifdef UITEST
     ((WXDemoViewController *)demo).url = [NSURL URLWithString:UITEST_HOME_URL];
 #endif
-    
+
     return demo;
 }
 
-#pragma mark 
+#pragma mark
 #pragma mark animation when startup
 
 - (void)startSplashScreen
 {
     UIView* splashView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     splashView.backgroundColor = WEEX_COLOR;
-    
+
     UIImageView *iconImageView = [UIImageView new];
     UIImage *icon = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"weex-icon" ofType:@"png"]];
     if ([icon respondsToSelector:@selector(imageWithRenderingMode:)]) {
@@ -154,13 +154,13 @@
     iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     iconImageView.center = splashView.center;
     [splashView addSubview:iconImageView];
-    
+
     [self.window addSubview:splashView];
-    
+
     float animationDuration = 1.4;
     CGFloat shrinkDuration = animationDuration * 0.3;
     CGFloat growDuration = animationDuration * 0.7;
-    
+
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         [UIView animateWithDuration:shrinkDuration delay:1.0 usingSpringWithDamping:0.7f initialSpringVelocity:10 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             CGAffineTransform scaleTransform = CGAffineTransformMakeScale(0.75, 0.75);
@@ -193,7 +193,7 @@
 #pragma mark
 
 - (void)atAddPlugin {
-    
+
     [[ATManager shareInstance] addPluginWithId:@"weex" andName:@"weex" andIconName:@"../weex" andEntry:@"" andArgs:@[@""]];
     [[ATManager shareInstance] addSubPluginWithParentId:@"weex" andSubId:@"logger" andName:@"logger" andIconName:@"log" andEntry:@"WXATLoggerPlugin" andArgs:@[@""]];
 //    [[ATManager shareInstance] addSubPluginWithParentId:@"weex" andSubId:@"viewHierarchy" andName:@"hierarchy" andIconName:@"log" andEntry:@"WXATViewHierarchyPlugin" andArgs:@[@""]];
@@ -210,15 +210,15 @@
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setURL:[NSURL URLWithString:URL]];
         [request setHTTPMethod:@"POST"];
-        
+
         NSHTTPURLResponse *urlResponse = nil;
         NSError *error = nil;
         NSData *recervedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
         NSString *results = [[NSString alloc] initWithBytes:[recervedData bytes] length:[recervedData length] encoding:NSUTF8StringEncoding];
-        
+
         NSDictionary *dic = [WXUtility objectFromJSON:results];
         NSArray *infoArray = [dic objectForKey:@"results"];
-        
+
         if ([infoArray count]) {
             NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
             weakSelf.latestVer = [releaseInfo objectForKey:@"version"];

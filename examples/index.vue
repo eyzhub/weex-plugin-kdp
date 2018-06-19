@@ -1,22 +1,25 @@
 <template>
 	<div class="container">
 		<text style="margin-bottom: 20px;">weex kdp plugin example</text>
-		<weexKdp ref="kdp" class="kdp" style="height:400" :playerConfig="playerConfig"></weexKdp>
+		<weexKdp ref="kdp" class="kdp" style="height:400" :playerConfig="playerConfig" partnerId="2031841" uiConfId="38785592"></weexKdp>
     <div class="controls">
+      <button class="controlButton" @click="show">
+        <text style="color:#fff">show</text>
+      </button>
       <button class="controlButton" @click="play">
-        <text style="color:#fff">&#9658;</text>
+        <text style="color:#ffffff">&#9658;</text>
       </button>
       <button class="controlButton" @click="pause">
-        <text style="color:#fff">&#9616;&#9616;</text>
+        <text style="color:#ffffff">&#9616;&#9616;</text>
       </button>
       <button class="controlButton" @click="seekBackward">
-        <text style="color:#fff">&#10703;</text>
+        <text style="color:#ffffff">&#10703;</text>
       </button>
       <button class="controlButton" @click="seekForward">
-        <text style="color:#fff">&#10704;</text>
+        <text style="color:#ffffff">&#10704;</text>
       </button>
       <button class="controlButton" @click="getTime">
-        <text style="color:#fff">t</text>
+        <text style="color:#ffffff">t</text>
       </button>
     </div>
     <div class="controls">
@@ -25,7 +28,7 @@
     </div>
     <div class="controls">
       <button class="controlButton" @click="changeMedia">
-        <text style="color:#fff">Change Video</text>
+        <text style="color:#ffffff">Change Video</text>
       </button>
     </div>
 	</div>
@@ -62,7 +65,7 @@
       }
     },
 		methods: {
-			createAction: function() {
+			show: function() {
 				plugin.show();
       },
       play() {
@@ -122,7 +125,7 @@
     margin-right: 20px;
     padding:20px;
     background-color:#1ba1e2;
-    color:#fff;
+    color:#ffffff;
   }
 
   .time {

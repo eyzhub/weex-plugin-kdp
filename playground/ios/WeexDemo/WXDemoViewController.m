@@ -37,23 +37,23 @@
 {
     if (self = [super init]) {
     }
-    
+
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self setupNaviBar];
     [self setupRightBarItem];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view setClipsToBounds:YES];
-    
+
     _weexHeight = self.view.frame.size.height - 64;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRefreshInstance:) name:@"RefreshInstance" object:nil];
-    
+
     [self render];
 }
 
@@ -98,7 +98,7 @@
 #if DEBUG
     [_instance forceGarbageCollection];
 #endif
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -109,7 +109,7 @@
     _instance = [[WXSDKInstance alloc] init];
     _instance.viewController = self;
     _instance.frame = CGRectMake(self.view.frame.size.width-width, 0, width, _weexHeight);
-    
+
     __weak typeof(self) weakSelf = self;
     _instance.onCreate = ^(UIView *view) {
         [weakSelf.weexView removeFromSuperview];
@@ -125,19 +125,19 @@
                 [errMsg appendFormat:@"ErrorType:%@\n",[error domain]];
                 [errMsg appendFormat:@"ErrorCode:%ld\n",(long)[error code]];
                 [errMsg appendFormat:@"ErrorInfo:%@\n", [error userInfo]];
-                
+
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"render failed" message:errMsg delegate:weakSelf cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
                 [alertView show];
             });
         }
         #endif
     };
-    
+
     _instance.renderFinish = ^(UIView *view) {
          WXLogDebug(@"%@", @"Render Finish...");
         [weakSelf updateInstanceState:WeexInstanceAppear];
     };
-    
+
     _instance.updateFinish = ^(UIView *view) {
         WXLogDebug(@"%@", @"Update Finish...");
     };
@@ -154,7 +154,7 @@
 {
     if (_instance && _instance.state != state) {
         _instance.state = state;
-        
+
         if (state == WeexInstanceAppear) {
             [[WXSDKManager bridgeMgr] fireEvent:_instance.instanceId ref:WX_SDK_ROOT_REF type:@"viewappear" params:nil domChanges:nil];
         }
@@ -188,7 +188,7 @@
 #pragma mark - websocket
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
 {
-    
+
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message
@@ -200,7 +200,7 @@
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
-    
+
 }
 
 #pragma mark - localBundle
@@ -212,14 +212,14 @@
         pathComponents =[NSMutableArray arrayWithArray:[url.absoluteString pathComponents]];
         [pathComponents removeObjectsInRange:NSRangeFromString(@"0 3")];
         [pathComponents replaceObjectAtIndex:0 withObject:@"bundlejs"];
-        
+
         NSString *filePath = [NSString stringWithFormat:@"%@/%@",[NSBundle mainBundle].bundlePath,[pathComponents componentsJoinedByString:@"/"]];
         localPath = [NSURL fileURLWithPath:filePath];
     }else {
         NSString *filePath = [NSString stringWithFormat:@"%@/bundlejs/index.js",[NSBundle mainBundle].bundlePath];
         localPath = [NSURL fileURLWithPath:filePath];
     }
-    
+
     NSString *bundleUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/bundlejs/",[NSBundle mainBundle].bundlePath]].absoluteString;
      [_instance renderWithURL:localPath options:@{@"bundleUrl":bundleUrl} data:nil];
 }*/

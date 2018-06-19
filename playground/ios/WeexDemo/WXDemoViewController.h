@@ -7,7 +7,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <SocketRocket/SRWebSocket.h>
+#import <SRWebSocket.h>
 
 @interface WXDemoViewController : UIViewController<SRWebSocketDelegate>
 

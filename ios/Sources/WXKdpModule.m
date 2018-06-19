@@ -29,22 +29,22 @@ WX_EXPORT_METHOD(@selector(show))
 {
     UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"title" message:@"module weexKdp is created sucessfully" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"ok", nil];
     [alertview show];
-    
+
 }
 
 - (void)performBlockWithRef:(NSString *)elemRef block:(void (^)(WXKdpComponent *))block {
     if (!elemRef) {
         return;
     }
-    
+
     __weak typeof(self) weakSelf = self;
-    
+
     WXPerformBlockOnComponentThread(^{
         WXKdpComponent *component = (WXKdpComponent *)[weakSelf.weexInstance componentForRef:elemRef];
         if (!component) {
             return;
         }
-        
+
         [weakSelf performSelectorOnMainThread:@selector(doBlock:) withObject:^() {
             block(component);
         } waitUntilDone:NO];
