@@ -47,6 +47,7 @@
           entryId: 'sintel',
           sources: [
             {
+              id: "1_w9zx2eti",
               contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/playManifest/entryId/1_w9zx2eti/format/applehttp/protocol/https/a.m3u8',
               mediaFormat: 'hls' // e.g. ".hls"
             }
@@ -73,12 +74,12 @@
         this.$refs.kdp.getProperty('duration', duration => {
           this.duration = duration;
         });
-        this.$refs.kdp.kBind('time', (currentTime) => {
+        this.$refs.kdp.kBind('timeChange', currentTime => {
           this.currentTime = currentTime;
         });
-        this.$refs.kdp.kBind('stateChange', (state) => {
-          this.state = state;
+        this.$refs.kdp.kBind('stateChange', state => {
           console.log('state: ', state);
+          this.state = state;
         });
       },
       pause() {
@@ -96,15 +97,26 @@
         });
       },
       changeMedia() {
-        this.$refs.kdp.sendNotification('changeMediaEntry', {
+        this.playerConfig = {
           entryId: 'Kaltura Media',
           sources: [
             {
+              id: "1_vl96wf1o",
               contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/sp/221584100/playManifest/entryId/1_vl96wf1o/format/applehttp/protocol/https/a.m3u8',
               mediaFormat: 'hls' // e.g. ".hls"
             }
           ]
-        });
+        };
+        // this.$refs.kdp.sendNotification('changeMediaEntry', {
+        //   entryId: 'Kaltura Media',
+        //   sources: [
+        //     {
+        //       id: "1_vl96wf1o",
+        //       contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/sp/221584100/playManifest/entryId/1_vl96wf1o/format/applehttp/protocol/https/a.m3u8',
+        //       mediaFormat: 'hls' // e.g. ".hls"
+        //     }
+        //   ]
+        // });
       }
 		},
 		created() {

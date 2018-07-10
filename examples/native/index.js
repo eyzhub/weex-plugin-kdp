@@ -92,10 +92,10 @@ __vue_options__ = __vue_exports__ = __vue_exports__.default
 if (typeof __vue_options__ === "function") {
   __vue_options__ = __vue_options__.options
 }
-__vue_options__.__file = "/Users/tralves/code/eyzhub/2/weex-kdp/examples/index.vue"
+__vue_options__.__file = "/Users/tralves/code/eyzhub/clone/weex-kdp/examples/index.vue"
 __vue_options__.render = __vue_template__.render
 __vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-__vue_options__._scopeId = "data-v-7dafe6f9"
+__vue_options__._scopeId = "data-v-fb6b22b8"
 __vue_options__.style = __vue_options__.style || {}
 __vue_styles__.forEach(function (module) {
   for (var name in module) {
@@ -194,6 +194,7 @@ module.exports = {
     playerConfig: {
       entryId: 'sintel',
       sources: [{
+        id: "1_w9zx2eti",
         contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/playManifest/entryId/1_w9zx2eti/format/applehttp/protocol/https/a.m3u8',
         mediaFormat: 'hls' // e.g. ".hls"
       }]
@@ -221,12 +222,12 @@ module.exports = {
       this.$refs.kdp.getProperty('duration', function (duration) {
         _this.duration = duration;
       });
-      this.$refs.kdp.kBind('time', function (currentTime) {
+      this.$refs.kdp.kBind('timeChange', function (currentTime) {
         _this.currentTime = currentTime;
       });
       this.$refs.kdp.kBind('stateChange', function (state) {
-        _this.state = state;
         console.log('state: ', state);
+        _this.state = state;
       });
     },
     pause: function pause() {
@@ -244,13 +245,24 @@ module.exports = {
       });
     },
     changeMedia: function changeMedia() {
-      this.$refs.kdp.sendNotification('changeMediaEntry', {
+      this.playerConfig = {
         entryId: 'Kaltura Media',
         sources: [{
+          id: "1_vl96wf1o",
           contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/sp/221584100/playManifest/entryId/1_vl96wf1o/format/applehttp/protocol/https/a.m3u8',
           mediaFormat: 'hls' // e.g. ".hls"
         }]
-      });
+      };
+      // this.$refs.kdp.sendNotification('changeMediaEntry', {
+      //   entryId: 'Kaltura Media',
+      //   sources: [
+      //     {
+      //       id: "1_vl96wf1o",
+      //       contentUrl: 'https://cdnapisec.kaltura.com/p/2215841/sp/221584100/playManifest/entryId/1_vl96wf1o/format/applehttp/protocol/https/a.m3u8',
+      //       mediaFormat: 'hls' // e.g. ".hls"
+      //     }
+      //   ]
+      // });
     }
   },
   created: function created() {

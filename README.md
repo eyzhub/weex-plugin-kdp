@@ -31,7 +31,7 @@ Add the following line to the dependencies list in the build.gradle file for the
 ### `<weex-kdp>`
 Adds the `weex-kdp` plugin to the template. See [Data: MediaEntry](#MediaEntry).
 ```html
-<weexKdp ref="kdp" MediaEntry="{/* MediaEntry */}"></weexKdp>
+<weexKdp ref="kdp" playerConfig="{/* MediaEntry */}"></weexKdp>
 ```
 
 ## Calling methods
@@ -45,26 +45,26 @@ this.$refs.kdp.sendNotification("doSeek", 30);
 
 ### Available Notifications
 
-#### `changeMediaEntry` *(ios)*
+#### `changeMediaEntry` *(iOS, Android)*
 Prepare for playing an entry. Play when it’s ready.
 - (JSON) `MediaEntry`: see [Data: MediaEntry](#mediaentry).
 ```js
-this.$refs.kdp.sendNotification('prepare', { /* media entry */});
+this.$refs.kdp.sendNotification('changeMediaEntry', { /* media entry */});
 ```
 
-#### `doPlay` *(iOS)*
+#### `doPlay` *(iOS, Android)*
 Plays the video.
 ```js
 this.$refs.kdp.sendNotification('doPlay')
 ```
 
-#### `doPause` *(iOS)*
+#### `doPause` *(iOS, Android)*
 Pauses the video.
 ```js
 this.$refs.kdp.sendNotification('doPause')
 ```
 
-#### `doSeek` *(iOS)*
+#### `doSeek` *(iOS, Android)*
 Sets the play time of the video.
 - (float) time.
 ```js
@@ -89,7 +89,7 @@ this.$refs.kdp.sendNotification('selectTrack', trackId)
 
 Use the **getProperty** method to retrieve data from the plugin, such as `duration`, `time`, `state`, `audioTrack`, `textTrack`,
 
-#### `duration` *(iOS)*
+#### `duration` *(iOS, Android)*
 Returns the duration of the video.
 - `callback`: `fn(duration)` callback returning the duration of the video.
   - (float) `duration`
@@ -99,7 +99,7 @@ this.$refs.kdp.getProperty('duration', duration => {
 })
 ```
 
-#### `time` *(iOS)*
+#### `time` *(iOS, Android)*
 Returns the current play time of the video.
 - `callback`: `fn(duration)` callback returning the plat time of the video.
   - (float) `time`: play time of the video
@@ -148,7 +148,7 @@ Registers an event.
 - `eventName`: name of the event (See [Event List](#eventlist)).
 - `callback`: `fn(eventData)` callback of the event.
 ```js
-this.$refs.kdp.kBind('onTimeChange', time => {
+this.$refs.kdp.kBind('timeChange', time => {
 		// time = the player's progress time in seconds
 	});
 ```
@@ -157,12 +157,12 @@ this.$refs.kdp.kBind('onTimeChange', time => {
 Unregister an event.
 - `eventName`: name of the event (See [Event List](#eventlist)).
 ```js
-this.$refs.kdp.kUnbind('onTimeChange');
+this.$refs.kdp.kUnbind('timeChange');
 ```
 
 ### Event List
 
-#### `timeChange` *(iOS)*
+#### `timeChange` *(iOS, Android)*
 Updates the callback each 500ms with the current time of the video.
 - `callback`: `fn(currentTime)` callback returning the current time of the video.
   - (float) `currentTime`
@@ -172,7 +172,7 @@ this.$refs.kdp.kBind('timeChange', (currentTime) => {
 })
 ```
 
-#### `stateChange` *(iOS)*
+#### `stateChange` *(iOS, Android)*
 Dispatched when media player's state has changed.
 - `callback`: `fn(playerState)`
   - (string) `playerState`: MediaPlayerState: `uninitialized` / `loading` / `ready` / `playing` / `paused` / `buffering` / `playbackError`
@@ -267,6 +267,7 @@ A media entry can have multiple sources that would be the same video in differen
     id: 'entryId',
     sources: [
       {
+        id: 'source id',
         contentUrl: 'url',
         mediaFormat: 'mediaFormat' // e.g. ".hls"
       }

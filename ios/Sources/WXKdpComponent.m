@@ -92,6 +92,15 @@ WX_EXPORT_METHOD(@selector(seek:))
     return self;
 }
 
+// TODO: TEST THIS!
+- (void)updateAttributes:(NSDictionary *)attributes
+{
+    if (attributes[@"playerConfig"]) {
+        self.playerConfig = [attributes objectForKey:@"playerConfig"];
+        [self preparePlayer];
+    }
+}
+
 - (void)initializeEventCallbackDictionary
 {
     self.eventCallbacks = [NSMutableDictionary dictionary];
@@ -182,7 +191,7 @@ WX_EXPORT_METHOD(@selector(seek:))
 
     [self.eventCallbacks setObject: callback forKey: event];
 
-    if ([event isEqualToString:@"time"]) {
+    if ([event isEqualToString:@"timeChange"]) {
         [self trackTime:callback];
     }
     else if ([event isEqualToString:@"stateChange"]) {
@@ -250,7 +259,8 @@ WX_EXPORT_METHOD(@selector(seek:))
     NSMutableArray<PKMediaSource*>* sources = [[NSMutableArray alloc] initWithCapacity:[configSources count]];
     for (configSource in configSources) {
         NSURL *contentURL = [[NSURL alloc] initWithString:[configSource objectForKey:@"contentUrl"]];
-        PKMediaSource* source = [[PKMediaSource alloc] init:entryId contentUrl:contentURL mimeType:nil drmData:nil mediaFormat:MediaFormatHls];
+        NSString *sourceId = [playerConfig objectForKey:@"id"];
+        PKMediaSource* source = [[PKMediaSource alloc] init:sourceId contentUrl:contentURL mimeType:nil drmData:nil mediaFormat:MediaFormatHls];
         [sources addObject:source];
     }
 

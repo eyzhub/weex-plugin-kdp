@@ -3,6 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
@@ -16,6 +20,10 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
 
@@ -24,6 +32,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    androidSupportVersion = "25.2.0"
+    androidSupportVersion = "25.3.1"
     weex_sdk = "0.18.0"
 }
